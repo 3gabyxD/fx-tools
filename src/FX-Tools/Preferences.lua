@@ -3,6 +3,7 @@ local Theme = require(script.Parent.Theme)
 
 --|| Utility ||--
 local Instantiate = require(script.Parent.Utility.Instantiate)
+local colorize = require(script.Parent.Utility.colorize)
 
 --|| Templates ||--
 local window = require(script.Parent.Elements.window)
@@ -16,25 +17,30 @@ function preferences.new(parent, config)
 			Vector2.new(1, 0),
 			UDim2.fromOffset(200, 20 * 2 + 20 + 20 + 10)
 		),
+		UI = {},
 		Config = config
 	}, {__index = preferences})
 	
-	self:CreateCategory(
+	self.UI.Curves = self:CreateCategory(
 		"Curves",
 		UDim2.fromOffset(10, 10),
 		{
 			"CurveLiveUpdate",
 			"CurveLiveDraw"
 		}
-	).Parent = self.Window.Instance
+	)
+	self.UI.Curves.Parent = self.Window.Instance
 	
-	self:CreateCategory(
-		"Menu",
+	self.UI.General = self:CreateCategory(
+		"General",
 		UDim2.fromOffset(10, 20 + 20*2),
 		{
 			"AlwaysActive"
 		}
-	).Parent = self.Window.Instance
+	)
+	self.UI.General.Parent = self.Window.Instance
+
+	colorize(self.UI)
 
 	return self
 end
@@ -70,6 +76,7 @@ function preferences:CreateCategory(title, pos, keys)
 				TextSize = 15,
 				Text = tostring(self.Config:Get(key)),
 				PlaceholderText = tostring(self.Config:Get(key)),
+				PlaceholderColor3 = Theme:Get("down"),
 				Font = Enum.Font.RobotoMono
 			})
 		})
