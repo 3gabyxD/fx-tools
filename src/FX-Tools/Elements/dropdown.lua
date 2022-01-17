@@ -1,4 +1,5 @@
 
+local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
 local Theme = require(script.Parent.Parent.Theme)
@@ -31,14 +32,40 @@ function dropdown.new(parent, pos, anchor, size, elements)
 				BorderSizePixel = 0,
 
 				Size = size
-			}), Instantiate("UICorner", {
+			}),
+			
+			Instantiate("UICorner", {
 				CornerRadius = UDim.new(0, Theme:Get("corner"))
 			}), Instantiate("UIStroke", {
 				Color = Theme:Get("border"),
 				Thickness = Theme:Get("bordersize"),
 			})
+		}),
+		Text = Instantiate("TextLabel", {
+			Parent = parent,
+			Name = "Credits!!",
+			Position = UDim2.new(1, 0, 1, 10),
+			AnchorPoint = Vector2.new(1, 0),
+			Size = UDim2.fromOffset(100, 30),
+			BackgroundTransparency = 1,
+			Font = Theme:Get("font"),
+			TextSize = 15,
+			TextColor3 = Theme:Get("main"),
+			Text = 'gaby',
+			TextXAlignment = Enum.TextXAlignment.Right,
+			TextYAlignment = Enum.TextYAlignment.Top,
 		})
 	}, {__index = dropdown})
+
+	RunService.RenderStepped:Connect(function()
+		self.Text.Position = UDim2.fromOffset(
+			self.Instance.AbsolutePosition.X
+			+ self.Instance.AbsoluteSize.X,
+			self.Instance.AbsolutePosition.Y
+			+ self.Instance.AbsoluteSize.Y
+			+ 5
+		)
+	end)
 
 	for i, element in pairs(self.Elements) do
 		local button = Instantiate("ImageButton", {
@@ -150,12 +177,14 @@ end
 function dropdown:reveal()
 	if self.Instance.Visible ~= true then
 		self.Instance.Visible = true
+		self.Text.Visible = true
 	end
 end
 
 function dropdown:hide()
 	if self.Instance.Visible ~= false then
 		self.Instance.Visible = false
+		self.Text.Visible = false
 		window.closeAll()
 	end
 end
