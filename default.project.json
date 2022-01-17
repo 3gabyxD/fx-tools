@@ -1,0 +1,13 @@
+{
+	"name": "fx-tools",
+	"tree": {
+		"$className": "DataModel",
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"FX-Tools": {
+				"$className": "Folder",
+				"$path": "src/FX-Tools"
+			}
+		}
+	}
+}
