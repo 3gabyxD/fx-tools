@@ -3,9 +3,17 @@
 FX Tools plugin for particles and such
 
 ## Table of Contents
+- [Installation](#installation)
 - [Curve Editor](#curve-editor)
 - [Clipboard](#clipboard)
 - [Preferences](#preferences)
+
+# Installation
+### From Roblox
+Install from the [plugin link](https://www.roblox.com/library/8564406599/FX-Tools)
+
+### Beta Versions
+Download an rbxm from [releases](https://github.com/3gabyxD/fx-tools/releases) and put that in your plugins folder. This can be found on `Plugins` tab with a blue folder icon.
 
 # Curve Editor
 - Dragging a point will move it.
