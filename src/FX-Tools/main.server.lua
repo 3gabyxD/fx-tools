@@ -81,7 +81,7 @@ local mainDropdown = dropdown.new(
 		
 		element.new(
 			"Preferences",
-			"rbxassetid://5344465760",
+			"rbxassetid://8438691758",
 			_preferences.Window
 		)
 	}

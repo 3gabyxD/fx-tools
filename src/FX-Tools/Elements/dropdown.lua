@@ -26,7 +26,7 @@ function dropdown.new(parent, pos, anchor, size, elements)
 		}, {
 			Instantiate("ImageButton", {
 				Name = "Button",
-				Image = "rbxassetid://7264430000",
+				Image = "rbxassetid://7068878280",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
 
