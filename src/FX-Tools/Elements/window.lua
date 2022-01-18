@@ -5,8 +5,10 @@ local Instantiate = require(script.Parent.Parent.Utility.Instantiate)
 local windows = {}
 
 local window = {}
+window.__index = window
 function window.new(parent, anchor, size, elements)
 	local self = setmetatable({
+		Type = "basic",
 		Parent = parent,
 		Anchor = anchor,
 		Size = size,
@@ -28,7 +30,7 @@ function window.new(parent, anchor, size, elements)
 				Thickness = Theme:Get("bordersize"),
 			}), (elements and unpack(elements))
 		})
-	}, {__index = window})
+	}, window)
 	windows[#windows + 1] = self
 	return self
 end
