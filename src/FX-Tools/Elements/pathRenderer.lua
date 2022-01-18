@@ -39,53 +39,70 @@ function pathRenderer:Draw()
 		local p2 = a1[1] -- Right Handle
 		local p3 = a1[2] -- Right Center
 
-		local xDist = p3.X - p0.X
-		local yDist = p3.Y - p0.Y
-
-		-- Map points from 0 -> 1
-
-		-- Map bezier output from 0 -> 1 to
-		-- p0.Y -> p3.Y
-
-		local bezier = ease.cubicbezier(
-			math.clamp(map(p0.X, p3.X, 0, 1, p1.X), 0, 1),
-			map(p0.Y, p3.Y, 0, 1, p1.Y),
-			math.clamp(map(p0.X, p3.X, 0, 1, p2.X), 0, 1),
-			map(p0.Y, p3.Y, 0, 1, p2.Y)
-		)
-
-		local steps = 20
-		for i = 0, steps-1 do
-
-			local t0 = i/steps
-			local t1 = (i+1)/steps
-
-			local x0 = map(0, 1, p0.X, p3.X, t0)
-			local x1 = map(0, 1, p0.X, p3.X, t1)
-
-			local y0 = map(0, 1, p0.Y, p3.Y, bezier(t0))
-			local y1 = map(0, 1, p0.Y, p3.Y, bezier(t1))
-
-			local dist = Vector2.new(x1, y1) - Vector2.new(x0, y0)
+		if p0.Y == p1.Y and p1.Y == p2.Y and p2.Y == p3.Y then
+			local dist = p3.X - p0.X
 
 			self.Frames[#self.Frames+1] =
 				Instantiate("Frame", {
 					Parent = self.Parent,
 					AnchorPoint = Vector2.new(.5, .5),
-					BackgroundColor3 = Theme:Get("highlight"),
+					BackgroundColor3 = Theme:Get("active"),
 					BorderSizePixel = 0,
-
-					Size = UDim2.new(dist.Magnitude+.01, 0, 0, 2),
+					Size = UDim2.new(dist+.01, 0, 0, 3),
 					Position = UDim2.fromScale(
-						(x0 + x1) / 2,
-						map(0, 1, 1, 0, (y0 + y1) / 2)
+						(p3.X + p0.X) / 2,
+						map(0, 1, 1, 0, p3.Y)
 					),
-					Rotation = -math.deg(math.atan2(
-						dist.Y,
-						dist.X
-						))
+					Rotation = 0,
+					ZIndex = -2
 				})
+		else
+			-- Map points from 0 -> 1
 
+			-- Map bezier output from 0 -> 1 to
+			-- p0.Y -> p3.Y
+
+			local bezier = ease.cubicbezier(
+				math.clamp(map(p0.X, p3.X, 0, 1, p1.X), 0, 1),
+				map(p0.Y, p3.Y, 0, 1, p1.Y),
+				math.clamp(map(p0.X, p3.X, 0, 1, p2.X), 0, 1),
+				map(p0.Y, p3.Y, 0, 1, p2.Y)
+			)
+
+			local steps = 20
+			for i = 0, steps-1 do
+
+				local t0 = i/steps
+				local t1 = (i+1)/steps
+
+				local x0 = map(0, 1, p0.X, p3.X, t0)
+				local x1 = map(0, 1, p0.X, p3.X, t1)
+
+				local y0 = map(0, 1, p0.Y, p3.Y, bezier(t0))
+				local y1 = map(0, 1, p0.Y, p3.Y, bezier(t1))
+
+				local dist = Vector2.new(x1, y1) - Vector2.new(x0, y0)
+
+				self.Frames[#self.Frames+1] =
+					Instantiate("Frame", {
+						Parent = self.Parent,
+						AnchorPoint = Vector2.new(.5, .5),
+						BackgroundColor3 = Theme:Get("active"),
+						BorderSizePixel = 0,
+
+						Size = UDim2.new(dist.Magnitude+.01, 0, 0, 3),
+						Position = UDim2.fromScale(
+							(x0 + x1) / 2,
+							map(0, 1, 1, 0, (y0 + y1) / 2)
+						),
+						Rotation = -math.deg(math.atan2(
+							dist.Y,
+							dist.X
+						)),
+						ZIndex = -2
+					})
+
+			end
 		end
 	end
 end
@@ -103,40 +120,47 @@ function pathRenderer:Render(min, max, envelope)
 		local p2 = a1[1] -- Right Handle
 		local p3 = a1[2] -- Right Center
 
-		local xDist = p3.X - p0.X
-		local yDist = p3.Y - p0.Y
+		if p0.Y == p1.Y and p1.Y == p2.Y and p2.Y == p3.Y then
+			seq[#seq + 1] = NumberSequenceKeypoint.new(
+				p0.X, map(0, 1, min, max, p0.Y), 0
+			)
+			seq[#seq + 1] = NumberSequenceKeypoint.new(
+				p3.X, map(0, 1, min, max, p3.Y), envelope
+			)
+		else
+			-- Map points from 0 -> 1
 
-		-- Map points from 0 -> 1
+			-- Map bezier output from 0 -> 1 to
+			-- p0.Y -> p3.Y
 
-		-- Map bezier output from 0 -> 1 to
-		-- p0.Y -> p3.Y
-
-		local bezier = ease.cubicbezier(
-			math.clamp(map(p0.X, p3.X, 0, 1, p1.X), 0, 1),
-			map(p0.Y, p3.Y, 0, 1, p1.Y),
-			math.clamp(map(p0.X, p3.X, 0, 1, p2.X), 0, 1),
-			map(p0.Y, p3.Y, 0, 1, p2.Y)
-		)
-		
-		seq[#seq + 1] = NumberSequenceKeypoint.new(
-			p0.X, map(0, 1, min, max, p0.Y), 0
-		)
-		
-		local steps = self.Steps / #self.Handles
-		for i = 1, steps-1 do
-			local t0 = i/steps
-
-			local x = map(0, 1, p0.X, p3.X, t0)
-			local y = map(0, 1, p0.Y, p3.Y, bezier(t0))
+			local bezier = ease.cubicbezier(
+				math.clamp(map(p0.X, p3.X, 0, 1, p1.X), 0, 1),
+				map(p0.Y, p3.Y, 0, 1, p1.Y),
+				math.clamp(map(p0.X, p3.X, 0, 1, p2.X), 0, 1),
+				map(p0.Y, p3.Y, 0, 1, p2.Y)
+			)
 			
 			seq[#seq + 1] = NumberSequenceKeypoint.new(
-				x, map(0, 1, min, max, y), envelope
+				p0.X, map(0, 1, min, max, p0.Y), 0
+			)
+			
+			local steps = self.Steps / #self.Handles
+			for i = 1, steps-1 do
+				local t0 = i/steps
+
+				local x = map(0, 1, p0.X, p3.X, t0)
+				local y = map(0, 1, p0.Y, p3.Y, bezier(t0))
+				
+				seq[#seq + 1] = NumberSequenceKeypoint.new(
+					x, map(0, 1, min, max, y), envelope
+				)
+			end
+			
+			seq[#seq + 1] = NumberSequenceKeypoint.new(
+				p3.X, map(0, 1, min, max, p3.Y), envelope
 			)
 		end
 		
-		seq[#seq + 1] = NumberSequenceKeypoint.new(
-			p3.X, map(0, 1, min, max, p3.Y), envelope
-		)
 	end
 	
 	return NumberSequence.new(seq)
