@@ -10,18 +10,18 @@ FX Tools plugin for particles and such
 - [Preferences](#preferences)
 
 # Screenshots
-## Curve Editor
+### Curve Editor
 ![curve-editor](/screenshots/curve-editor.png)
 
-## Sequence Clipboard
+### Sequence Clipboard
 ![seq-clipbard](/screenshots/seq-clipboard.png)
 
 
 # Installation
-## From Roblox
+### From Roblox
 Install from the [plugin link](https://www.roblox.com/library/8564406599/FX-Tools)
 
-## Beta Versions
+### Beta Versions
 Download an rbxm from [releases](https://github.com/3gabyxD/fx-tools/releases) and put that in your plugins folder. This can be found on `Plugins` tab with a blue folder icon.
 
 # Curve Editor
