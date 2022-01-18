@@ -76,7 +76,7 @@ function handle.new(parent, pos, lock, clamp, hide, callback, onclick)
 			self.Handle0.Y - self.Anchor.Y,
 			self.Handle0.X - self.Anchor.X
 			)),
-		Size = UDim2.new((self.Anchor - self.Handle0).Magnitude, 0, 0, 1),
+		Size = UDim2.new((self.Anchor - self.Handle0).Magnitude, 0, 0, 3),
 		ZIndex = -1,
 	})
 
@@ -95,7 +95,7 @@ function handle.new(parent, pos, lock, clamp, hide, callback, onclick)
 			self.Handle1.Y - self.Anchor.Y,
 			self.Handle1.X - self.Anchor.X
 			)),
-		Size = UDim2.new((self.Anchor - self.Handle1).Magnitude, 0, 0, 1),
+		Size = UDim2.new((self.Anchor - self.Handle1).Magnitude, 0, 0, 3),
 		ZIndex = -1,
 	})
 
@@ -202,7 +202,7 @@ function handle.new(parent, pos, lock, clamp, hide, callback, onclick)
 		end
 	end)
 
-	self.Handle0Inst.MouseButton1Click:Connect(function()
+	local function han0click()
 		local vector = self.OnClick(self.Handle0)
 		if not vector then return end
 		self.Handle0 = Vector2.new(
@@ -227,7 +227,10 @@ function handle.new(parent, pos, lock, clamp, hide, callback, onclick)
 		if self.Callback then
 			self.Callback(true)
 		end
-	end)
+	end
+
+	self.Handle0Inst.MouseButton1Click:Connect(han0click)
+	self.Handle0Inst.MouseButton2Click:Connect(han0click)
 
 	self.Handle1Inst.MouseButton1Down:Connect(function()
 		while UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
@@ -319,7 +322,7 @@ function handle:Redraw()
 		self.Handle0.X - self.Anchor.X
 		))
 
-	self.Handle0Line.Size = UDim2.new((self.Anchor - self.Handle0).Magnitude, 0, 0, 1)
+	self.Handle0Line.Size = UDim2.new((self.Anchor - self.Handle0).Magnitude, 0, 0, 3)
 
 	self.Handle1Line.Position = UDim2.fromScale(
 		(self.Anchor.X + self.Handle1.X) / 2,
@@ -330,7 +333,7 @@ function handle:Redraw()
 		self.Handle1.X - self.Anchor.X
 		))
 
-	self.Handle1Line.Size = UDim2.new((self.Anchor - self.Handle1).Magnitude, 0, 0, 1)
+	self.Handle1Line.Size = UDim2.new((self.Anchor - self.Handle1).Magnitude, 0, 0, 3)
 
 end
 
