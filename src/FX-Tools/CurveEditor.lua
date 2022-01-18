@@ -366,6 +366,7 @@ function curveEditor:DrawUI()
 	self.UI.Curve.Steps.Box.InputEnded:Connect(function()
 		if tonumber(self.UI.Curve.Steps.Box.Text) then
 			self.Renderer.Steps = tonumber(self.UI.Curve.Steps.Box.Text)
+			self:CurveChanged()
 		end
 	end)
 	
@@ -509,6 +510,7 @@ function curveEditor:DrawUI()
 			Position = UDim2.fromOffset(10, 0),
 			TextColor3 = Theme:Get("main"),
 			TextSize = 15,
+			BorderSizePixel = 0,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Text = "Tranparency",
 			Font = Theme:Get("font")
@@ -521,6 +523,7 @@ function curveEditor:DrawUI()
 			Size = UDim2.new(1, 0, 0, 20),
 			TextColor3 = Theme:Get("main"),
 			TextSize = 15,
+			BorderSizePixel = 0,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Text = "Size",
 			Font = Theme:Get("font")
@@ -533,6 +536,7 @@ function curveEditor:DrawUI()
 			Position = UDim2.fromOffset(10, 20*2),
 			TextColor3 = Theme:Get("main"),
 			TextSize = 15,
+			BorderSizePixel = 0,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Text = "Squash",
 			Font = Theme:Get("font")
@@ -551,6 +555,7 @@ function curveEditor:DrawUI()
 			Position = UDim2.fromOffset(10, 20*1),
 			TextColor3 = Theme:Get("main"),
 			TextSize = 15,
+			BorderSizePixel = 0,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Text = "WidthScale",
 			Font = Theme:Get("font")
