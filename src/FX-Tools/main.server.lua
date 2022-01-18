@@ -46,6 +46,7 @@ local pathRenderer = require(script.Parent.Elements.pathRenderer)
 local curveEditor = require(script.Parent.CurveEditor)
 local clipboard = require(script.Parent.Clipboard)
 local preferences = require(script.Parent.Preferences)
+local timeline = require(script.Parent.Timeline)
 
 --|| Elements ||--
 if CoreGui:FindFirstChild("FXToolsMain") then
@@ -61,6 +62,7 @@ local mainScreen = Instantiate("ScreenGui", {
 local _curveEditor = curveEditor.new(mainScreen, config)
 local _clipboard = clipboard.new(mainScreen, config)
 local _preferences = preferences.new(mainScreen, config)
+local _timeline = timeline.new(mainScreen, config)
 
 local mainDropdown = dropdown.new(
 	mainScreen,
@@ -78,7 +80,11 @@ local mainDropdown = dropdown.new(
 			"rbxassetid://8502840060",
 			_clipboard.Window
 		),
-		
+		element.new(
+			"Timeline",
+			"",
+			_timeline.Window
+		),
 		element.new(
 			"Preferences",
 			"rbxassetid://8438691758",
